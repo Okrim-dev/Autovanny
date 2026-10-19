@@ -11,6 +11,11 @@
 -- ------------------------------------------------------------
 
 -- VEHICLES
+drop policy if exists "Admins can view all vehicles" on public.cars;
+drop policy if exists "Admins can insert vehicles" on public.cars;
+drop policy if exists "Admins can update vehicles" on public.cars;
+drop policy if exists "Admins can delete vehicles" on public.cars;
+
 create policy "Admins can view all vehicles"
   on public.cars for select
   to authenticated
@@ -33,6 +38,11 @@ create policy "Admins can delete vehicles"
   using (true);
 
 -- ARTICLES
+drop policy if exists "Admins can view all articles" on public.articles;
+drop policy if exists "Admins can insert articles" on public.articles;
+drop policy if exists "Admins can update articles" on public.articles;
+drop policy if exists "Admins can delete articles" on public.articles;
+
 create policy "Admins can view all articles"
   on public.articles for select
   to authenticated
@@ -68,6 +78,15 @@ on conflict (id) do update set
   allowed_mime_types = excluded.allowed_mime_types;
 
 -- Lettura pubblica (anon + autenticati)
+drop policy if exists "Public read vehicle-images" on storage.objects;
+drop policy if exists "Public read article-images" on storage.objects;
+drop policy if exists "Admins upload vehicle-images" on storage.objects;
+drop policy if exists "Admins update vehicle-images" on storage.objects;
+drop policy if exists "Admins delete vehicle-images" on storage.objects;
+drop policy if exists "Admins upload article-images" on storage.objects;
+drop policy if exists "Admins update article-images" on storage.objects;
+drop policy if exists "Admins delete article-images" on storage.objects;
+
 create policy "Public read vehicle-images"
   on storage.objects for select
   using (bucket_id = 'vehicle-images');

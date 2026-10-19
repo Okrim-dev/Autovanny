@@ -10,7 +10,7 @@ export const siteConfig = {
   currencySymbol: "€",
   deposit: 210,
   contact: {
-    phone: "+44 20 7946 0958",
+    phone: "0828 347 183",
     mobile: "335 421810",
     email: "hello@autovanny.com",
     address: {
@@ -40,9 +40,9 @@ export const siteConfig = {
     { label: "Contatti", href: "/contact" },
   ],
   social: {
-    instagram: "https://instagram.com/autovanny",
-    tiktok: "https://tiktok.com/autovanny",
-    facebook: "https://facebook.com/autovanny",
+    instagram: "https://www.instagram.com/autovanny_groupsrl/",
+    tiktok: "https://www.tiktok.com/@autovanny",
+    facebook: "https://www.facebook.com/autovannygroupsrl",
     whatsapp: "https://wa.me/335421810",
   },
 };
