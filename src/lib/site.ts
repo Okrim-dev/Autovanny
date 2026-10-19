@@ -12,7 +12,7 @@ export const siteConfig = {
   contact: {
     phone: "0828 347 183",
     mobile: "335 421810",
-    email: "hello@autovanny.com",
+    // email: "",
     address: {
       street: "Via S.S. 18 - Loc. Cioffi, 60",
       city: "84025 Eboli (SA)",

@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 };
 
 const hours = [
-  { day: "Lunedì – Venerdì", time: "9:00 – 19:00" },
-  { day: "Sabato", time: "9:30 – 18:00" },
-  { day: "Domenica", time: "Su appuntamento" },
+  { day: "Lunedì – Sabato", time: "8:30 – 13:00" },
+  { day: "Lunedì – Venerdi", time: "15:00 – 19:30" },
+  { day: "Domenica", time: "Chiuso" },
 ];
 
 export default function ContactPage() {
@@ -224,7 +224,7 @@ export default function ContactPage() {
           </Link>
 
           <Link
-            href="/valuation"
+            href="https://wa.me/335421810"
             className="group rounded-2xl border border-line bg-white p-6 transition-colors hover:border-ink"
           >
             <h2 className="text-lg font-semibold text-ink">

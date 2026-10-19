@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 };
 
 const stats = [
-  { value: "12+", label: "anni di esperienza nel settore" },
-  { value: "1.500+", label: "veicoli consegnati ai nostri clienti" },
-  { value: "150", label: "punti di ispezione su ogni auto" },
-  { value: "12 mesi", label: "di garanzia completa di serie" },
+  { value: "37+", label: "anni di esperienza nel settore" },
+  { value: "1500+", label: "veicoli consegnati ai nostri clienti" },
+  // { value: "150", label: "punti di ispezione su ogni auto" },
+  // { value: "12 mesi", label: "di garanzia completa di serie" },
 ];
 
 const steps = [
@@ -22,18 +22,18 @@ const steps = [
     title: "Selezione",
     text: "I nostri acquirenti scelgono a mano ogni veicolo tra le migliori auto europee di pregio, privilegiando storia documentata, equipaggiamento e stato di conservazione.",
   },
+  // {
+  //   number: "02",
+  //   title: "Ispezione",
+  //   text: "Un collaudo di 150 punti eseguito da tecnici certificati copre motore, carrozzeria, abitacolo ed elettronica. Nessun veicolo passa senza superare ogni controllo.",
+  // },
   {
     number: "02",
-    title: "Ispezione",
-    text: "Un collaudo di 150 punti eseguito da tecnici certificati copre motore, carrozzeria, abitacolo ed elettronica. Nessun veicolo passa senza superare ogni controllo.",
-  },
-  {
-    number: "03",
     title: "Preparazione",
     text: "Ripristini, tagliandi e rifinitura professionale: ogni auto arriva in showroom pronta da guidare, con lo storico completo e documentato.",
   },
   {
-    number: "04",
+    number: "03",
     title: "Consegna e garanzia",
     text: "Ti accompagniamo nella scelta, gestiamo finanziamento e passaggio di consegne e copriamo il veicolo con garanzia completa di almeno 12 mesi.",
   },
@@ -42,7 +42,7 @@ const steps = [
 const values = [
   {
     title: "Trasparenza totale",
-    text: "Storico dei tagliandi, verifica di sinistri e documentazione sempre a disposizione. Sai esattamente cosa stai comprando, senza sorprese.",
+    // text: "Storico dei tagliandi, verifica di sinistri e documentazione sempre a disposizione. Sai esattamente cosa stai comprando, senza sorprese.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-7 w-7">
         <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z" strokeLinejoin="round" />
@@ -52,7 +52,7 @@ const values = [
   },
   {
     title: "Qualità certificata",
-    text: "Ispezione di 150 punti e garanzia completa su ogni veicolo: il nostro standard non è negoziabile, auto dopo auto.",
+    // text: "Ispezione di 150 punti e garanzia completa su ogni veicolo: il nostro standard non è negoziabile, auto dopo auto.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-7 w-7">
         <path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z" strokeLinejoin="round" />
@@ -62,7 +62,7 @@ const values = [
   },
   {
     title: "Consulenza dedicata",
-    text: "Un consulente segue te e il tuo veicolo dalla prima visita fino alla consegna, e resta il tuo referente anche dopo l'acquisto.",
+    // text: "Un consulente segue te e il tuo veicolo dalla prima visita fino alla consegna, e resta il tuo referente anche dopo l'acquisto.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-7 w-7">
         <path d="M20 21a8 8 0 0 0-16 0" strokeLinecap="round" />
@@ -72,7 +72,7 @@ const values = [
   },
   {
     title: "Servizi su misura",
-    text: "Finanziamento personalizzato, valutazione e permuta del tuo usato, consegna in tutta Italia e assistenza post-vendita dedicata.",
+    // text: "Finanziamento personalizzato, valutazione e permuta del tuo usato, consegna in tutta Italia e assistenza post-vendita dedicata.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-7 w-7">
         <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" strokeLinecap="round" />
@@ -96,8 +96,7 @@ export default function AboutPage() {
           <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-300 sm:text-lg">
             Da oltre dieci anni Autovanny seleziona, ispeziona e garantisce auto
             europee usate di pregio. Ogni veicolo del nostro showroom è scelto a
-            mano, controllato su 150 punti e coperto da garanzia completa di
-            almeno 12 mesi: è così che lavoriamo, e non cambieremo.
+            mano, è così che lavoriamo, e non cambieremo.
           </p>
 
           <div className="mt-10 flex flex-wrap gap-4">
@@ -115,7 +114,7 @@ export default function AboutPage() {
             </Link>
           </div>
 
-          <dl className="mt-16 grid grid-cols-2 gap-8 border-t border-white/10 pt-10 lg:grid-cols-4">
+          {/* <dl className="mt-16 grid grid-cols-2 gap-8 border-t border-white/10 pt-10 lg:grid-cols-4">
             {stats.map((stat) => (
               <div key={stat.label}>
                 <dt className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -126,7 +125,7 @@ export default function AboutPage() {
                 </dd>
               </div>
             ))}
-          </dl>
+          </dl> */}
         </div>
       </section>
 
@@ -200,9 +199,9 @@ export default function AboutPage() {
               <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent">
                 {value.icon}
               </div>
-              <div>
+              <div className="flex items-center">
                 <h3 className="text-lg font-semibold text-ink">{value.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-zinc-500">{value.text}</p>
+                {/* <p className="mt-2 text-sm leading-6 text-zinc-500">{value.text}</p> */}
               </div>
             </div>
           ))}
@@ -253,12 +252,12 @@ export default function AboutPage() {
                 >
                   {siteConfig.contact.phone}
                 </a>
-                <a
+                {/* <a
                   href={`mailto:${siteConfig.contact.email}`}
                   className="block transition-colors hover:text-accent"
                 >
                   {siteConfig.contact.email}
-                </a>
+                </a> */}
               </dd>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
@@ -266,11 +265,11 @@ export default function AboutPage() {
                 Orari
               </dt>
               <dd className="mt-3 text-base leading-7 text-white">
-                Lun – Ven: 9:00 – 19:00
+                Lun – Sab: 8:30 – 13:00
                 <br />
-                Sabato: 9:30 – 18:00
+                Lun – Venerdì: 15:00 – 19:30
                 <br />
-                Domenica: su appuntamento
+                Domenica: chiuso
               </dd>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
