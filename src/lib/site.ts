@@ -27,9 +27,9 @@ export const siteConfig = {
     shareCapital: "€ 100.000,00 i.v.",
   },
   hours: [
-    { day: "Lunedì – Venerdì", time: "9:00 – 19:00" },
-    { day: "Sabato", time: "9:30 – 18:00" },
-    { day: "Domenica", time: "Su appuntamento" },
+    { day: "Lunedì – Sabato", time: "8:30 – 13:00" },
+    { day: "Lunedì – Venerdi", time: "15:00 – 19:30" },
+    { day: "Domenica", time: "Chiuso" },
   ],
   nav: [
     { label: "Home", href: "/" },
