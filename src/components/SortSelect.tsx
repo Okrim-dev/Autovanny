@@ -7,7 +7,7 @@ const options = [
   { value: "price_asc", label: "Prezzo: dal più basso" },
   { value: "price_desc", label: "Prezzo: dal più alto" },
   { value: "year_desc", label: "Anno: dal più recente" },
-  { value: "mileage_asc", label: "Kilometraggio: dal più basso" },
+  { value: "mileage_asc", label: "Km: dal più basso" },
 ];
 
 export default function SortSelect() {

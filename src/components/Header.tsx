@@ -21,7 +21,9 @@ export default function Header() {
         >
           <img src="/logo-autovanny.svg" alt={siteConfig.name} className="h-15 w-15" />
           {/* <Logo className="h-15 w-15" title={siteConfig.name} /> */}
-          <span className="sr-only">{siteConfig.name}</span>
+          <span className="ml-2 text-sm font-semibold tracking-wide text-ink">
+            Autovanny Group S.r.l.
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

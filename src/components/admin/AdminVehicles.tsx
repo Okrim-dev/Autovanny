@@ -14,17 +14,21 @@ const EMPTY_FORM = {
   model: "",
   trim: "",
   title: "",
+  month: "",
   year: "",
   mileage: "",
   price: "",
   fuel: "Petrol",
   transmission: "Automatic",
   body_style: "",
-  category_id: "",
+  category: "",
+  vehicle_type: "autovettura",
+  seats: "",
   condition: "Usato",
   engine: "",
   displacement: "",
   bhp: "",
+  kilowatts: "",
   km_per_l: "",
   exterior_color: "",
   description: "",
@@ -45,7 +49,7 @@ const FUELS = [
 ];
 
 const TRANSMISSIONS = [
-  { value: "Automatic", label: "Automatica" },
+  { value: "Automatic", label: "Automatico" },
   { value: "Manual", label: "Manuale" },
 ];
 
@@ -56,6 +60,21 @@ const BODY_STYLES = [
   { value: "Coupe", label: "Coupé" },
   { value: "Convertible", label: "Cabriolet" },
   { value: "Hatchback", label: "Utilitaria" },
+];
+
+const MONTHS = [
+  { value: "1", label: "Gennaio" },
+  { value: "2", label: "Febbraio" },
+  { value: "3", label: "Marzo" },
+  { value: "4", label: "Aprile" },
+  { value: "5", label: "Maggio" },
+  { value: "6", label: "Giugno" },
+  { value: "7", label: "Luglio" },
+  { value: "8", label: "Agosto" },
+  { value: "9", label: "Settembre" },
+  { value: "10", label: "Ottobre" },
+  { value: "11", label: "Novembre" },
+  { value: "12", label: "Dicembre" },
 ];
 
 const PER_PAGE = 5;
@@ -120,17 +139,25 @@ export default function AdminVehicles({
       model: car.model,
       trim: car.trim ?? "",
       title: car.title,
+      month: car.month ? String(car.month) : "",
       year: String(car.year),
       mileage: String(car.mileage),
       price: String(car.price),
       fuel: car.fuel,
       transmission: car.transmission,
       body_style: car.body_style ?? "",
-      category_id: car.category_id ?? "",
+      category: categories.find((c) => c.id === car.category_id)?.name ?? "",
+      vehicle_type: car.vehicle_type ?? "autovettura",
+      seats: car.seats ?? "",
       condition: car.condition ?? "Usato",
       engine: car.engine ?? "",
       displacement: car.displacement ? String(car.displacement) : "",
       bhp: car.bhp ? String(car.bhp) : "",
+      kilowatts: car.kilowatts
+        ? String(car.kilowatts)
+        : car.bhp
+          ? String(Math.round(car.bhp * 0.7355))
+          : "",
       km_per_l: car.km_per_l ? String(car.km_per_l) : "",
       exterior_color: car.exterior_color ?? "",
       description: car.description ?? "",
@@ -162,17 +189,21 @@ export default function AdminVehicles({
       model: form.model,
       trim: form.trim || null,
       title: form.title || null,
+      month: form.month ? Number(form.month) : null,
       year: Number(form.year),
       price: Number(form.price),
       mileage: Number(form.mileage) || 0,
       fuel: form.fuel,
       transmission: form.transmission,
       body_style: form.body_style || null,
-      category_id: form.category_id || null,
+      vehicle_type: form.vehicle_type,
+      seats: form.seats || null,
+      category: form.category || null,
       condition: form.condition || "Usato",
       engine: form.engine || null,
       displacement: form.displacement ? Number(form.displacement) : null,
       bhp: form.bhp ? Number(form.bhp) : null,
+      kilowatts: form.kilowatts ? Number(form.kilowatts) : null,
       km_per_l: form.km_per_l ? Number(form.km_per_l) : null,
       certified: form.certified,
       featured: form.featured,
@@ -299,15 +330,29 @@ export default function AdminVehicles({
           </div>
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-ink">Anno</label>
-              <input
-                type="number"
-                value={form.year}
-                onChange={(e) => set("year", e.target.value)}
-                placeholder="es. 2022"
-                className={inputClass}
-              />
+            <div className="sm:col-span-2">
+              <label className="mb-1.5 block text-sm font-medium text-ink">Immatricolazione</label>
+              <div className="flex gap-2">
+                <select
+                  value={form.month}
+                  onChange={(e) => set("month", e.target.value)}
+                  className={inputClass}
+                >
+                  <option value="">Mese…</option>
+                  {MONTHS.map((m) => (
+                    <option key={m.value} value={m.value}>
+                      {m.label}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="number"
+                  value={form.year}
+                  onChange={(e) => set("year", e.target.value)}
+                  placeholder="es. 2022"
+                  className={inputClass}
+                />
+              </div>
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-ink">Chilometraggio (km)</label>
@@ -353,6 +398,17 @@ export default function AdminVehicles({
           </div>
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-ink">Tipologia</label>
+              <select
+                value={form.vehicle_type}
+                onChange={(e) => set("vehicle_type", e.target.value)}
+                className={inputClass}
+              >
+                <option value="autovettura">Autovettura</option>
+                <option value="autocarro">Autocarro</option>
+              </select>
+            </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-ink">Alimentazione</label>
               <select value={form.fuel} onChange={(e) => set("fuel", e.target.value)} className={inputClass}>
@@ -408,23 +464,15 @@ export default function AdminVehicles({
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-ink">Categoria</label>
-              <select
-                value={form.category_id}
-                onChange={(e) => set("category_id", e.target.value)}
+              <input
+                value={form.category}
+                onChange={(e) => set("category", e.target.value)}
+                placeholder="es. Berlina"
                 className={inputClass}
-              >
-                <option value="">Nessuna categoria</option>
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-              {categories.length === 0 && (
-                <p className="mt-1 text-xs text-zinc-400">
-                  Crea le categorie in “Categorie” nel menu admin.
-                </p>
-              )}
+              />
+              <p className="mt-1 text-xs text-zinc-400">
+                Se non esiste, viene creata automaticamente.
+              </p>
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-ink">Colore esterno</label>
@@ -440,8 +488,25 @@ export default function AdminVehicles({
               <input
                 type="number"
                 value={form.bhp}
-                onChange={(e) => set("bhp", e.target.value)}
+                onChange={(e) => {
+                  set("bhp", e.target.value);
+                  if (!form.kilowatts && e.target.value) {
+                    set("kilowatts", String(Math.round(Number(e.target.value) * 0.7355)));
+                  }
+                }}
                 placeholder="es. 204"
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-ink">
+                Potenza (kW) <span className="text-zinc-400">(opzionale)</span>
+              </label>
+              <input
+                type="number"
+                value={form.kilowatts}
+                onChange={(e) => set("kilowatts", e.target.value)}
+                placeholder="es. 150"
                 className={inputClass}
               />
             </div>
@@ -455,6 +520,17 @@ export default function AdminVehicles({
                 value={form.km_per_l}
                 onChange={(e) => set("km_per_l", e.target.value)}
                 placeholder="es. 15.5"
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-ink">
+                Posti a sedere <span className="text-zinc-400">(opzionale)</span>
+              </label>
+              <input
+                value={form.seats}
+                onChange={(e) => set("seats", e.target.value)}
+                placeholder="es. 5"
                 className={inputClass}
               />
             </div>

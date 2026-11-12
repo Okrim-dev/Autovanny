@@ -27,14 +27,6 @@ const sections = {
       title: "Disponibilità e prezzi",
       text: `Tutti i veicoli sono soggetti a disponibilità. I prezzi sono espressi in euro e includono l'IVA. Facciamo del nostro meglio per mantenere gli annunci accurati, ma sono fatte salve eventuali errori e omissioni.`,
     },
-    {
-      title: "Prenotazioni",
-      text: `Un acconto di 210 €, completamente rimborsabile, blocca un veicolo. Se decidi di non procedere, l'acconto viene restituito per intero.`,
-    },
-    {
-      title: "Garanzia",
-      text: `Ogni veicolo include una garanzia completa di almeno 12 mesi sui principali componenti. I termini completi vengono forniti prima dell'acquisto.`,
-    },
   ],
   cookies: [
     {

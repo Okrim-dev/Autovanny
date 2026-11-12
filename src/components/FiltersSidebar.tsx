@@ -173,7 +173,7 @@ export default function FiltersSidebar({
         {categories.length > 0 && (
           <section>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-              Categoria
+              Carrozzeria
             </h3>
             <div className="mt-3 flex flex-wrap gap-2">
               {categories.map((category) => {

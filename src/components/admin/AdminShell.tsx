@@ -51,6 +51,15 @@ const NAV = [
   //   ),
   // },
   {
+    href: "/admin/recensioni",
+    label: "Recensioni",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
+        <path d="M12 3.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8-4.2-4.1 5.9-.9z" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
     href: "/admin/impostazioni",
     label: "Impostazioni",
     icon: (

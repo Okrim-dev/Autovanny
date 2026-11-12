@@ -5,14 +5,14 @@ export const siteConfig = {
   name: "Autovanny",
   tagline: "I tuoi specialisti di auto di fiducia.",
   description:
-    "Scopri la nostra selezione curata di auto usate e km0. Controllate sulla qualità, garantite per la tua tranquillità.",
+    "Scopri la nostra selezione curata di auto usate. Controllate sulla qualità, garantite per la tua tranquillità.",
   currency: "EUR",
   currencySymbol: "€",
   deposit: 210,
   contact: {
     phone: "0828 347 183",
     mobile: "335 421810",
-    email: "autovanny.db@gmail.com",
+    email: "amministrazione@autovannygroupsrl.it",
     address: {
       street: "Via S.S. 18 - Loc. Cioffi, 60",
       city: "84025 Eboli (SA)",
@@ -33,9 +33,9 @@ export const siteConfig = {
   ],
   nav: [
     { label: "Home", href: "/" },
-    { label: "KM0", href: "/showroom?condition=KM0" },
+    // { label: "KM0", href: "/showroom?condition=KM0" },
     { label: "Parco Auto", href: "/showroom" },
-    { label: "Noleggio", href: "/showroom?rental=true" },
+    // { label: "Noleggio", href: "/showroom?rental=true" },
     { label: "Chi siamo", href: "/about" },
     { label: "Contatti", href: "/contact" },
   ],

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 
 async function requireUser() {
@@ -72,6 +73,7 @@ export interface VehicleInput {
   model: string;
   trim?: string | null;
   title?: string | null;
+  month?: number | null;
   year: number;
   price: number;
   mileage: number;
@@ -82,17 +84,47 @@ export interface VehicleInput {
   engine?: string | null;
   displacement?: number | null;
   bhp?: number | null;
+  kilowatts?: number | null;
   km_per_l?: number | null;
   certified: boolean;
   featured: boolean;
   rental?: boolean;
   stock: boolean;
-  category_id?: string | null;
+  vehicle_type?: string;
+  seats?: string | null;
+  category?: string | null;
   description?: string | null;
   exterior_color?: string | null;
   images: string[];
   standard_features?: string[];
   accessories?: string[];
+}
+
+async function resolveCategoryByName(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  name?: string | null
+): Promise<string | null> {
+  const trimmed = name?.trim();
+  if (!trimmed) return null;
+
+  const { data: rows, error: listError } = await supabase
+    .from("categories")
+    .select("id, name");
+  if (listError) return null;
+
+  const match = (rows ?? []).find(
+    (r) => (r as { id: string; name: string }).name.toLowerCase() === trimmed.toLowerCase()
+  );
+  if (match) return (match as { id: string }).id;
+
+  const slug = await uniqueCategorySlug(supabase, slugify(trimmed));
+  const { data: created, error: insertError } = await supabase
+    .from("categories")
+    .insert({ name: trimmed, slug, position: 0, visible: true })
+    .select("id")
+    .single();
+  if (insertError) return null;
+  return (created as { id: string }).id;
 }
 
 export async function saveVehicleAction(input: VehicleInput): Promise<{ ok: boolean; error?: string }> {
@@ -103,6 +135,8 @@ export async function saveVehicleAction(input: VehicleInput): Promise<{ ok: bool
   if (!brand || !model) return { ok: false, error: "Marca e modello sono obbligatori." };
   if (!input.year || input.year < 1900 || input.year > 2100)
     return { ok: false, error: "Anno non valido." };
+  if (input.month != null && (input.month < 1 || input.month > 12))
+    return { ok: false, error: "Mese di immatricolazione non valido." };
   if (input.price <= 0) return { ok: false, error: "Prezzo non valido." };
 
   const title = (input.title?.trim() || `${brand} ${model}${input.trim ? ` ${input.trim}` : ""}`).trim();
@@ -110,14 +144,19 @@ export async function saveVehicleAction(input: VehicleInput): Promise<{ ok: bool
   const cleanList = (list?: string[]) =>
     (list ?? []).map((item) => item.trim()).filter(Boolean);
 
+  const categoryId = await resolveCategoryByName(supabase, input.category);
+
   const row = {
     brand,
     model,
     trim: input.trim?.trim() || null,
     title,
+    month: input.month ?? null,
     year: input.year,
     price: input.price,
     mileage: input.mileage || 0,
+    vehicle_type: input.vehicle_type === "autocarro" ? "autocarro" : "autovettura",
+    seats: input.seats?.trim() || null,
     fuel: input.fuel,
     transmission: input.transmission,
     body_style: input.body_style?.trim() || null,
@@ -125,12 +164,13 @@ export async function saveVehicleAction(input: VehicleInput): Promise<{ ok: bool
     engine: input.engine?.trim() || null,
     displacement: input.displacement ?? null,
     bhp: input.bhp ?? null,
+    kilowatts: input.kilowatts ?? null,
     km_per_l: input.km_per_l ?? null,
     certified: Boolean(input.certified),
     featured: Boolean(input.featured),
     rental: Boolean(input.rental),
     stock: Boolean(input.stock),
-    category_id: input.category_id || null,
+    category_id: categoryId,
     description: input.description?.trim() || null,
     exterior_color: input.exterior_color?.trim() || null,
     images: input.images ?? [],
@@ -328,5 +368,89 @@ export async function updatePasswordAction(newPassword: string): Promise<{ ok: b
   const { supabase } = await requireUser();
   const { error } = await supabase.auth.updateUser({ password: newPassword });
   if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
+export async function createUserAction(
+  email: string,
+  password: string
+): Promise<{ ok: boolean; error?: string }> {
+  await requireUser();
+
+  const trimmedEmail = email.trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail))
+    return { ok: false, error: "Indirizzo email non valido." };
+  if (password.length < 8)
+    return { ok: false, error: "La password deve contenere almeno 8 caratteri." };
+
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !serviceKey)
+    return {
+      ok: false,
+      error:
+        "Manca SUPABASE_SERVICE_ROLE_KEY nel .env del server: è necessaria per creare nuovi account.",
+    };
+
+  const admin = createSupabaseClient(url, serviceKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+
+  const { error } = await admin.auth.admin.createUser({
+    email: trimmedEmail,
+    password,
+    email_confirm: true,
+  });
+
+  if (error) {
+    if (error.message.toLowerCase().includes("already"))
+      return { ok: false, error: "Esiste già un utente con questa email." };
+    return { ok: false, error: error.message };
+  }
+
+  return { ok: true };
+}
+
+// ------------------------------------------------------------------
+// Recensioni
+// ------------------------------------------------------------------
+
+export interface ReviewInput {
+  id?: string | null;
+  name: string;
+  text: string;
+  rating: number;
+  visible?: boolean;
+}
+
+export async function saveReviewAction(input: ReviewInput): Promise<{ ok: boolean; error?: string }> {
+  const { supabase } = await requireUser();
+
+  const name = input.name.trim();
+  const text = input.text.trim();
+  if (!name) return { ok: false, error: "Il nome è obbligatorio." };
+  if (!text) return { ok: false, error: "Il testo della recensione è obbligatorio." };
+  if (!Number.isInteger(input.rating) || input.rating < 1 || input.rating > 5)
+    return { ok: false, error: "Le stelle devono essere tra 1 e 5." };
+
+  const row = { name, text, rating: input.rating, visible: input.visible !== false };
+
+  if (input.id) {
+    const { error } = await supabase.from("reviews").update(row).eq("id", input.id);
+    if (error) return { ok: false, error: error.message };
+  } else {
+    const { error } = await supabase.from("reviews").insert(row);
+    if (error) return { ok: false, error: error.message };
+  }
+
+  revalidatePath("/");
+  return { ok: true };
+}
+
+export async function deleteReviewAction(id: string): Promise<{ ok: boolean; error?: string }> {
+  const { supabase } = await requireUser();
+  const { error } = await supabase.from("reviews").delete().eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/");
   return { ok: true };
 }

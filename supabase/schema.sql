@@ -29,10 +29,14 @@ create table if not exists public.cars (
   model         text not null,
   trim          text,
   title         text not null,
+  month         integer check (month between 1 and 12),
   year          integer not null check (year between 1900 and 2100),
   price         numeric(12, 2) not null check (price >= 0),
   currency      text not null default 'GBP',
   mileage       integer not null default 0,
+  kilowatts     integer,
+  vehicle_type  text not null default 'autovettura',
+  seats         text,
   fuel          text not null,
   transmission  text not null,
   body_style    text,
@@ -83,6 +87,19 @@ create table if not exists public.articles (
 create index if not exists articles_published_idx on public.articles (published_at desc);
 
 -- ------------------------------------------------------------
+-- Tabella recensioni clienti (slider nella home)
+-- ------------------------------------------------------------
+create table if not exists public.reviews (
+  id         uuid primary key default gen_random_uuid(),
+  name       text not null,
+  text       text not null,
+  rating     integer not null check (rating between 1 and 5),
+  visible    boolean not null default true,
+  position   integer not null default 0,
+  created_at timestamptz not null default now()
+);
+
+-- ------------------------------------------------------------
 -- Row Level Security
 -- Fase 1: lettura pubblica (anon key).
 -- Fase 2: area admin protetta con autenticazione — si aggiungeranno
@@ -91,6 +108,7 @@ create index if not exists articles_published_idx on public.articles (published_
 alter table public.cars enable row level security;
 alter table public.articles enable row level security;
 alter table public.categories enable row level security;
+alter table public.reviews enable row level security;
 
 create policy "Cars are publicly viewable"
   on public.cars for select
@@ -102,4 +120,8 @@ create policy "Articles are publicly viewable"
 
 create policy "Categories are publicly viewable"
   on public.categories for select
+  using (visible = true);
+
+create policy "Reviews are publicly viewable"
+  on public.reviews for select
   using (visible = true);

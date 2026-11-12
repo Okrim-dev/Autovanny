@@ -7,6 +7,12 @@ const companyLinks = [
   { label: "Informativa sui cookie", href: "/cookies" },
 ];
 
+const socialLinks = [
+  { label: "Instagram", href: siteConfig.social.instagram, icon: "fab fa-instagram" },
+  { label: "Facebook", href: siteConfig.social.facebook, icon: "fab fa-facebook" },
+  { label: "TikTok", href: siteConfig.social.tiktok, icon: "fab fa-tiktok" },
+].filter((item) => item.href);
+
 export default function Footer() {
   const legal = siteConfig.legal;
 
@@ -15,48 +21,30 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="text-xl font-bold tracking-tight text-white">{siteConfig.name}</p>
+            <p className="text-xl font-bold tracking-tight text-white">{legal.companyName}</p>
             <p className="mt-3 max-w-sm text-sm leading-6 text-zinc-400">{siteConfig.tagline}</p>
-            <address className="mt-6 text-sm not-italic leading-6 text-zinc-400">
-              {siteConfig.contact.address.street}
-              <br />
-              {siteConfig.contact.address.city}
-            </address>
-            <div className="mt-5 flex gap-3">
-              {siteConfig.social.instagram && (
-                <a
-                  href={siteConfig.social.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Instagram"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-zinc-300 transition-colors hover:border-white hover:text-white"
-                >
-                  <i className="fab fa-instagram"></i>
-                </a>
-              )}
-              {siteConfig.social.facebook && (
-                <a
-                  href={siteConfig.social.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Facebook"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-zinc-300 transition-colors hover:border-white hover:text-white"
-                >
-                  <i className="fab fa-facebook"></i>
-                </a>
-              )}
-              {siteConfig.social.tiktok && (
-                <a
-                  href={siteConfig.social.tiktok}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="TikTok"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-zinc-300 transition-colors hover:border-white hover:text-white"
-                >
-                  <i className="fab fa-tiktok"></i>
-                </a>
-              )}
-            </div>
+
+            <p className="mt-6 text-sm font-semibold uppercase tracking-wider text-white">
+              Dati societari
+            </p>
+            <dl className="mt-3 space-y-3 text-sm leading-6 text-zinc-400">
+              <div>
+                <dt className="text-zinc-500">Sede</dt>
+                <dd className="text-zinc-300">{legal.address}</dd>
+              </div>
+              <div>
+                <dt className="text-zinc-500">Partita IVA / Codice Fiscale</dt>
+                <dd className="text-zinc-300">{legal.vat}</dd>
+              </div>
+              <div>
+                <dt className="text-zinc-500">Numero REA</dt>
+                <dd className="text-zinc-300">{legal.rea}</dd>
+              </div>
+              <div>
+                <dt className="text-zinc-500">Capitale Sociale</dt>
+                <dd className="text-zinc-300">{legal.shareCapital}</dd>
+              </div>
+            </dl>
           </div>
 
           <div>
@@ -132,31 +120,22 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="text-sm font-semibold uppercase tracking-wider text-white">
-              Dati societari
-            </p>
-            <dl className="mt-4 space-y-3 text-sm leading-6 text-zinc-400">
-              <div>
-                <dt className="text-zinc-500">Ragione sociale</dt>
-                <dd className="text-zinc-300">{legal.companyName}</dd>
-              </div>
-              <div>
-                <dt className="text-zinc-500">Sede</dt>
-                <dd className="text-zinc-300">{legal.address}</dd>
-              </div>
-              <div>
-                <dt className="text-zinc-500">Partita IVA / Codice Fiscale</dt>
-                <dd className="text-zinc-300">{legal.vat}</dd>
-              </div>
-              <div>
-                <dt className="text-zinc-500">Numero REA</dt>
-                <dd className="text-zinc-300">{legal.rea}</dd>
-              </div>
-              <div>
-                <dt className="text-zinc-500">Capitale Sociale</dt>
-                <dd className="text-zinc-300">{legal.shareCapital}</dd>
-              </div>
-            </dl>
+            <p className="text-sm font-semibold uppercase tracking-wider text-white">Social</p>
+            <ul className="mt-4 space-y-2.5">
+              {socialLinks.map((item) => (
+                <li key={item.label}>
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-zinc-400 transition-colors hover:text-white"
+                  >
+                    <i className={`${item.icon} mr-2 w-4 text-center`} aria-hidden="true"></i>
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 

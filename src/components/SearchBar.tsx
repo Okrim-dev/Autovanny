@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FUEL_OPTIONS, TRANSMISSION_OPTIONS } from "@/lib/labels";
 
-const YEARS = Array.from({ length: 15 }, (_, i) => new Date().getFullYear() - 6 - i);
+const YEARS = Array.from({ length: 22 }, (_, i) => new Date().getFullYear() - i);
 
 interface SearchBarProps {
   brands: string[];
@@ -14,14 +14,52 @@ export default function SearchBar({ brands }: SearchBarProps) {
   const router = useRouter();
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
+  const [models, setModels] = useState<string[]>([]);
+  const [modelsLoading, setModelsLoading] = useState(true);
+  const [tipologia, setTipologia] = useState("");
   const [alimentazione, setAlimentazione] = useState("");
   const [cambio, setCambio] = useState("");
   const [yearFrom, setYearFrom] = useState("");
   const [result, setResult] = useState<{ key: string; total: number } | null>(null);
   const [failed, setFailed] = useState(false);
   const requestRef = useRef(0);
+  const modelsCacheRef = useRef(new Map<string, string[]>());
+
+  useEffect(() => {
+    const cached = modelsCacheRef.current.get(brand);
+    if (cached) {
+      setModels(cached);
+      setModelsLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+    setModelsLoading(true);
+
+    (async () => {
+      try {
+        const res = await fetch(`/api/models?brand=${encodeURIComponent(brand)}`, {
+          cache: "no-store",
+        });
+        if (!res.ok) throw new Error("fetch failed");
+        const data = (await res.json()) as { models: string[] };
+        if (cancelled) return;
+        modelsCacheRef.current.set(brand, data.models);
+        setModels(data.models);
+      } catch {
+        if (!cancelled) setModels([]);
+      } finally {
+        if (!cancelled) setModelsLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [brand]);
 
   const params = new URLSearchParams();
+  if (tipologia) params.set("type", tipologia);
   if (brand) params.set("brand", brand);
   if (model) params.set("model", model);
   if (alimentazione) params.set("fuel", alimentazione);
@@ -79,10 +117,32 @@ export default function SearchBar({ brands }: SearchBarProps) {
       onSubmit={handleSubmit}
       className="rounded-2xl border border-line bg-white p-5 shadow-xl shadow-ink/5"
     >
-      <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-5">
+      <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-6">
+        <label className="flex flex-col gap-1.5">
+          <span className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+            Tipologia
+          </span>
+          <select
+            value={tipologia}
+            onChange={(e) => setTipologia(e.target.value)}
+            className={selectClass}
+          >
+            <option value="">Tutte</option>
+            <option value="autovettura">Autovettura</option>
+            <option value="autocarro">Autocarro</option>
+          </select>
+        </label>
+
         <label className="flex flex-col gap-1.5">
           <span className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Marca</span>
-          <select value={brand} onChange={(e) => setBrand(e.target.value)} className={selectClass}>
+          <select
+            value={brand}
+            onChange={(e) => {
+              setBrand(e.target.value);
+              setModel("");
+            }}
+            className={selectClass}
+          >
             <option value="">Tutte le marche</option>
             {brands.map((b) => (
               <option key={b} value={b}>
@@ -94,13 +154,21 @@ export default function SearchBar({ brands }: SearchBarProps) {
 
         <label className="flex flex-col gap-1.5">
           <span className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Modello</span>
-          <input
-            type="text"
+          <select
             value={model}
             onChange={(e) => setModel(e.target.value)}
-            placeholder="Qualsiasi modello"
+            disabled={modelsLoading}
             className={selectClass}
-          />
+          >
+            <option value="">
+              {modelsLoading ? "Caricamento modelli…" : "Tutti i modelli"}
+            </option>
+            {models.map((m) => (
+              <option key={m} value={m}>
+                {m}
+              </option>
+            ))}
+          </select>
         </label>
 
         <label className="flex flex-col gap-1.5">

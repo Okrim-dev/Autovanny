@@ -5,10 +5,14 @@ export interface Car {
   model: string;
   trim: string;
   title: string;
+  month: number;
   year: number;
   price: number;
   currency: string;
   mileage: number;
+  kilowatts: number;
+  vehicle_type?: string;
+  seats?: string | null;
   fuel: string;
   transmission: string;
   body_style: string | null;
@@ -48,11 +52,22 @@ export interface Article {
   created_at: string;
 }
 
+export interface Review {
+  id: string;
+  name: string;
+  text: string;
+  rating: number;
+  visible: boolean;
+  position: number;
+  created_at: string;
+}
+
 export interface CarFilters {
   brand?: string[];
   certified?: boolean;
   rental?: boolean;
   model?: string;
+  vehicle_type?: string;
   body_style?: string;
   fuel?: string;
   transmission?: string;

@@ -94,9 +94,9 @@ export default function AdminCategories({ categories }: { categories: Category[]
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-ink">Categorie Veicoli</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-ink">Carrozzerie Veicoli</h1>
         <p className="mt-1 text-sm text-zinc-500">
-          Crea le categorie che raggruppano le auto: compaiono nei filtri del parco auto e nelle
+          Crea le carrozzerie che raggruppano le auto: compaiono nei filtri del parco auto e nelle
           anteprime della home.
         </p>
       </div>
@@ -116,7 +116,7 @@ export default function AdminCategories({ categories }: { categories: Category[]
       <section className="rounded-2xl border border-line bg-white">
         <div className="border-b border-line px-6 py-5">
           <h2 className="text-lg font-bold text-ink">
-            {editingId ? "Modifica Categoria" : "Nuova Categoria"}
+            {editingId ? "Modifica Categoria" : "Nuova Carrozzeria"}
           </h2>
         </div>
 
@@ -198,12 +198,12 @@ export default function AdminCategories({ categories }: { categories: Category[]
 
       <section className="rounded-2xl border border-line bg-white">
         <div className="border-b border-line px-6 py-4">
-          <h2 className="text-lg font-bold text-ink">Categorie esistenti</h2>
+          <h2 className="text-lg font-bold text-ink">Carrozzerie esistenti</h2>
         </div>
 
         {categories.length === 0 ? (
           <p className="px-6 py-12 text-center text-sm text-zinc-500">
-            Nessuna categoria creata. Le categorie che crei qui compaiono nella home e nei filtri
+            Nessuna categoria creata. Le carrozzerie che crei qui compaiono nella home e nei filtri
             del parco auto: non ce ne sono di predefinite.
           </p>
         ) : (

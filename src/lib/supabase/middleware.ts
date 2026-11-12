@@ -32,16 +32,17 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const isLoginPage = pathname === "/admin/login";
+  const isPublicAdminPage =
+    pathname === "/admin/login" || pathname === "/admin/reset-password";
   const isAdminArea = pathname.startsWith("/admin");
 
-  if (!user && isAdminArea && !isLoginPage) {
+  if (!user && isAdminArea && !isPublicAdminPage) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/admin/login";
     return NextResponse.redirect(loginUrl);
   }
 
-  if (user && isLoginPage) {
+  if (user && pathname === "/admin/login") {
     const adminUrl = request.nextUrl.clone();
     adminUrl.pathname = "/admin";
     return NextResponse.redirect(adminUrl);

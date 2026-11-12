@@ -6,6 +6,7 @@ import {
   mapsEmbedUrl,
   mapsLink,
   siteConfig,
+  telHref,
 } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -67,10 +68,7 @@ export default function ContactPage() {
 
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-3">
-          <a
-            href={`tel:${siteConfig.contact.phone.replace(/\s/g, "")}`}
-            className="group rounded-2xl border border-line bg-white p-6 transition-colors hover:border-ink"
-          >
+          <div className="group rounded-2xl border border-line bg-white p-6 transition-colors hover:border-ink">
             <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft text-accent">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6">
                 <path d="M4.5 5.5A2.5 2.5 0 0 1 7 3h1.8a1.5 1.5 0 0 1 1.45 1.1l.7 2.6a1.5 1.5 0 0 1-.55 1.6L8.9 9.4a12 12 0 0 0 5.7 5.7l1.1-1.55a1.5 1.5 0 0 1 1.6-.55l2.6.7A1.5 1.5 0 0 1 21 16.2V18a2.5 2.5 0 0 1-2.5 2.5C10.5 20.5 3.5 13.5 3.5 6A2.5 2.5 0 0 1 4.5 5.5z" strokeLinejoin="round" />
@@ -80,10 +78,27 @@ export default function ContactPage() {
             <p className="mt-1 text-sm text-zinc-500">
               Risposta immediata negli orari di apertura
             </p>
-            <p className="mt-3 text-base font-semibold text-ink group-hover:text-accent">
-              {siteConfig.contact.phone}
-            </p>
-          </a>
+            <div className="mt-4 flex flex-col gap-2.5">
+              <a
+                href={telHref(siteConfig.contact.phone)}
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-accent px-5 text-sm font-semibold text-white transition-colors hover:bg-ink"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden="true">
+                  <path d="M4.5 5.5A2.5 2.5 0 0 1 7 3h1.8a1.5 1.5 0 0 1 1.45 1.1l.7 2.6a1.5 1.5 0 0 1-.55 1.6L8.9 9.4a12 12 0 0 0 5.7 5.7l1.1-1.55a1.5 1.5 0 0 1 1.6-.55l2.6.7A1.5 1.5 0 0 1 21 16.2V18a2.5 2.5 0 0 1-2.5 2.5C10.5 20.5 3.5 13.5 3.5 6A2.5 2.5 0 0 1 4.5 5.5z" strokeLinejoin="round" />
+                </svg>
+                {siteConfig.contact.phone}
+              </a>
+              <a
+                href={telHref(siteConfig.contact.mobile)}
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-line px-5 text-sm font-semibold text-ink transition-colors hover:border-accent hover:text-accent"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4" aria-hidden="true">
+                  <path d="M4.5 5.5A2.5 2.5 0 0 1 7 3h1.8a1.5 1.5 0 0 1 1.45 1.1l.7 2.6a1.5 1.5 0 0 1-.55 1.6L8.9 9.4a12 12 0 0 0 5.7 5.7l1.1-1.55a1.5 1.5 0 0 1 1.6-.55l2.6.7A1.5 1.5 0 0 1 21 16.2V18a2.5 2.5 0 0 1-2.5 2.5C10.5 20.5 3.5 13.5 3.5 6A2.5 2.5 0 0 1 4.5 5.5z" strokeLinejoin="round" />
+                </svg>
+                {siteConfig.contact.mobile}
+              </a>
+            </div>
+          </div>
 
           <a
             href={`mailto:${siteConfig.contact.email}`}
@@ -143,7 +158,7 @@ export default function ContactPage() {
                     Indirizzo
                   </dt>
                   <dd className="mt-1 text-base leading-7 text-ink">
-                    Autovanny Motors
+                    Autovanny Group S.r.l.  
                     <br />
                     {fullAddress}
                   </dd>

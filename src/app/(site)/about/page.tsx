@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import { fullAddress, siteConfig } from "@/lib/site";
@@ -20,7 +21,7 @@ const steps = [
   {
     number: "01",
     title: "Selezione",
-    text: "I nostri acquirenti scelgono a mano ogni veicolo tra le migliori auto europee di pregio, privilegiando storia documentata, equipaggiamento e stato di conservazione.",
+    text: "Scegliamo personalmente ogni veicolo, privilegiando storia documentata, equipaggiamento e stato di conservazione.",
   },
   // {
   //   number: "02",
@@ -35,7 +36,7 @@ const steps = [
   {
     number: "03",
     title: "Consegna e garanzia",
-    text: "Ti accompagniamo nella scelta, gestiamo finanziamento e passaggio di consegne e copriamo il veicolo con garanzia completa di almeno 12 mesi.",
+    text: "Ti accompagniamo nella scelta, gestiamo finanziamento e passaggio di consegna.",
   },
 ];
 
@@ -85,8 +86,20 @@ const values = [
 export default function AboutPage() {
   return (
     <>
-      <section className="bg-ink text-white">
-        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+      <section className="relative bg-ink text-white">
+        <Image
+          src="/about.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/75 to-ink/85"
+        />
+        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-widest text-accent">
             Chi siamo
           </p>
@@ -94,9 +107,8 @@ export default function AboutPage() {
             La concessionaria per chi non accetta compromessi sull&apos;auto giusta.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-300 sm:text-lg">
-            Da oltre dieci anni Autovanny seleziona, ispeziona e garantisce auto
-            europee usate di pregio. Ogni veicolo del nostro showroom è scelto a
-            mano, è così che lavoriamo, e non cambieremo.
+            Da 30 anni Autovanny Group S.r.l. seleziona, ispeziona e garantisce auto
+            europee usate di pregio. Ogni veicolo del nostro showroom è scelto con cura, è così che lavoriamo, e non cambieremo.
           </p>
 
           <div className="mt-10 flex flex-wrap gap-4">
@@ -133,8 +145,8 @@ export default function AboutPage() {
         <div className="grid items-start gap-12 lg:grid-cols-2">
           <SectionHeading
             eyebrow="La nostra storia"
-            title="Nati dall'amore per l'ingegneria europea"
-            subtitle="Autovanny nasce dall'idea semplice che comprare un'auto usata debba essere un'esperienza chiara, sicura e senza pressioni."
+            title="Nati dall'amore per il settore automobilistico"
+            subtitle="Autovanny Group S.r.l. nasce dall'idea semplice che comprare un'auto usata debba essere un'esperienza chiara, sicura e senza pressioni."
           />
           <div className="space-y-5 text-sm leading-7 text-zinc-600 sm:text-base">
             <p>
@@ -146,8 +158,8 @@ export default function AboutPage() {
               trasparente che continua anche dopo la consegna delle chiavi.
             </p>
             <p>
-              Oggi Autovanny è un punto di riferimento per chi cerca vetture
-              europee di pregio: berline, sportive, SUV e cabrio con storia
+              Oggi Autovanny Group S.r.l. è un punto di riferimento per chi cerca vetture
+di pregio: berline, sportive, SUV e cabrio con storia
               verificata, pronte a essere guidate con la certezza di aver fatto
               la scelta giusta.
             </p>
@@ -163,7 +175,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <SectionHeading
             eyebrow="Il metodo Autovanny"
-            title="Quattro passaggi, zero sorprese"
+            title="Tre passaggi, zero sorprese"
             subtitle="Ogni veicolo che entra nel nostro showroom segue lo stesso percorso: è così che garantiamo qualità costante."
           />
           <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -218,7 +230,7 @@ export default function AboutPage() {
               Showroom Autovanny
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-7 text-zinc-300">
-              Prenota una visita o una prova su strada: il nostro team è a tua
+              Prenota una prova su strada: il nostro team è a tua
               disposizione per farti provare il veicolo che hai scelto, senza
               impegno e con tutti i tempi necessari.
             </p>
@@ -226,7 +238,7 @@ export default function AboutPage() {
               href="/contact"
               className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-accent px-8 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-ink"
             >
-              Prenota una visita
+              Prenota una prova su strada
             </Link>
           </div>
 
@@ -236,7 +248,7 @@ export default function AboutPage() {
                 Indirizzo
               </dt>
               <dd className="mt-3 text-base leading-7 text-white">
-                Autovanny Motors
+                Autovanny Group S.r.l.
                 <br />
                 {fullAddress}
               </dd>
@@ -293,7 +305,7 @@ export default function AboutPage() {
           Pronto a trovare la tua prossima auto?
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-zinc-600">
-          Esplora il nostro inventario aggiornato ogni settimana oppure
+          Esplora il nostro parco auto aggiornato ogni settimana oppure
           contattaci per un consulente dedicato: ti aiutiamo a scegliere il
           veicolo giusto, al prezzo giusto.
         </p>

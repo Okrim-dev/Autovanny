@@ -1,9 +1,10 @@
 import { Suspense } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import SearchBar from "@/components/SearchBar";
 import CategoryTiles from "@/components/CategoryTiles";
-import FeaturedInventory from "@/components/FeaturedInventory";
 import LatestCars from "@/components/LatestCars";
+import ReviewsSlider from "@/components/ReviewsSlider";
 import SectionHeading from "@/components/SectionHeading";
 import { getBrands, getCarCategories } from "@/lib/data";
 import { siteConfig } from "@/lib/site";
@@ -13,12 +14,23 @@ export default async function Home() {
 
   return (
     <>
-      <section className="bg-ink">
-        <div className="mx-auto max-w-7xl px-4 pt-20 pb-28 text-center sm:px-6 sm:pt-28 sm:pb-36 lg:px-8">
+      <section className="relative bg-ink">
+        <Image
+          src="/hero.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/70 to-ink/85"
+        />
+        <div className="relative mx-auto max-w-7xl px-4 pt-20 pb-28 text-center sm:px-6 sm:pt-28 sm:pb-36 lg:px-8">
           <p className="mt-5 mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm font-medium tracking-wider text-zinc-300 backdrop-blur-sm">
             <span className="h-3.5 w-3.5 rounded-full bg-accent text-3xl" />
-            Dal <span className="font-bold text-white text-3xl">1989</span> al{" "}
-            <span className="font-bold text-white text-3xl">2026</span>
+            Dal <span className="font-bold text-white text-3xl">1989</span>
           </p>
           <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
             Le migliori auto
@@ -36,7 +48,7 @@ export default async function Home() {
           </Link>
         </div>
 
-        <div id="find" className="mx-auto -mb-24 max-w-7xl px-4 pb-6 sm:px-6 lg:px-8">
+        <div id="find" className="relative mx-auto -mb-24 max-w-7xl px-4 pb-6 sm:px-6 lg:px-8">
           <SearchBar brands={brands} />
         </div>
       </section>
@@ -48,8 +60,8 @@ export default async function Home() {
           <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-8 lg:pt-24">
             <SectionHeading
               eyebrow="Sfoglia"
-              title="Categorie"
-              subtitle="Sfoglia le auto in base alle categorie create da noi: trova subito quella che fa per te."
+              title="Carrozzeria"
+              subtitle="Sfoglia le auto in base alla carrozzeria: trova subito quella che fa per te."
             />
             <div className="mt-8">
               <CategoryTiles categories={categories} />
@@ -57,16 +69,7 @@ export default async function Home() {
           </section>
         )}
 
-        <Suspense
-          fallback={
-            <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-3 lg:px-8">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-[420px] animate-pulse rounded-2xl bg-zinc-200" />
-              ))}
-            </div>
-          }
-        >
-        </Suspense>
+        <ReviewsSlider />
       </div>
     </>
   );

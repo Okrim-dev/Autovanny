@@ -16,14 +16,13 @@ const BODY_STYLE_LABELS: Record<string, string> = {
 };
 
 const TRANSMISSION_LABELS: Record<string, string> = {
-  Automatic: "Automatica",
+  Automatic: "Automatico",
   Manual: "Manuale",
 };
 
 const CONDITION_LABELS: Record<string, string> = {
-  KM0: "KM0",
+  Nuovo: "Nuovo",
   Usato: "Usato",
-  Rimmatricolato: "Rimmatricolato",
 };
 
 export interface SelectOption {
@@ -42,7 +41,7 @@ export const FUEL_OPTIONS: SelectOption[] = [
 ];
 
 export const TRANSMISSION_OPTIONS: SelectOption[] = [
-  { value: "Automatic", label: "Automatica" },
+  { value: "Automatic", label: "Automatico" },
   { value: "Manual", label: "Manuale" },
 ];
 
@@ -58,9 +57,8 @@ export const BODY_STYLE_OPTIONS: SelectOption[] = [
 ];
 
 export const CONDITION_OPTIONS: SelectOption[] = [
-  { value: "KM0", label: "KM0" },
+  { value: "Nuovo", label: "Nuovo" },
   { value: "Usato", label: "Usato" },
-  { value: "Rimmatricolato", label: "Rimmatricolato" },
 ];
 
 export function fuelOptionLabel(value: string): string {

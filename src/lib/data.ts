@@ -1,7 +1,7 @@
 import { isSupabaseConfigured, supabase } from "./supabase";
 import { mockArticles, mockCars } from "./mock-data";
 import type { CarCategory } from "./categories";
-import type { Article, Car, CarFilters, CarResults, Category, FilterOptions } from "./types";
+import type { Article, Car, CarFilters, CarResults, Category, FilterOptions, Review } from "./types";
 
 const EMPTY_UUID = "00000000-0000-0000-0000-000000000000";
 
@@ -50,6 +50,7 @@ export function parseCarFilters(searchParams: URLSearchParams): CarFilters {
     certified: searchParams.has("certified") ? certified : undefined,
     rental: searchParams.get("rental") === "true" ? true : undefined,
     model,
+    vehicle_type: searchParams.get("type") || undefined,
     body_style: searchParams.get("body_style") || undefined,
     fuel: searchParams.get("fuel") || undefined,
     transmission: searchParams.get("transmission") || undefined,
@@ -89,6 +90,11 @@ function applyMockFilters(cars: Car[], filters: CarFilters): Car[] {
     if (filters.certified && !car.certified) return false;
     if (filters.rental && !car.rental) return false;
     if (filters.model && car.model.toLowerCase() !== filters.model.toLowerCase()) return false;
+    if (
+      filters.vehicle_type &&
+      (car.vehicle_type ?? "autovettura") !== filters.vehicle_type
+    )
+      return false;
     if (
       filters.body_style &&
       car.body_style?.toLowerCase() !== filters.body_style.toLowerCase()
@@ -202,6 +208,7 @@ export async function getCars(filters: CarFilters, perPage = 9): Promise<CarResu
     if (filters.certified) query = query.eq("certified", true);
     if (filters.rental) query = query.eq("rental", true);
     if (filters.model) query = query.ilike("model", `%${filters.model}%`);
+    if (filters.vehicle_type) query = query.eq("vehicle_type", filters.vehicle_type);
     if (filters.body_style) query = query.eq("body_style", filters.body_style);
     if (filters.fuel) query = query.eq("fuel", filters.fuel);
     if (filters.transmission) query = query.eq("transmission", filters.transmission);
@@ -290,6 +297,27 @@ export async function getBrands(): Promise<string[]> {
     return [...new Set((data ?? []).map((r) => r.brand as string))];
   } catch {
     return [...new Set(mockCars.map((c) => c.brand))].sort();
+  }
+}
+
+export async function getModelsByBrand(brand?: string): Promise<string[]> {
+  const fallback = (): string[] => {
+    const source = brand
+      ? mockCars.filter((c) => c.brand.toLowerCase() === brand.toLowerCase())
+      : mockCars;
+    return [...new Set(source.map((c) => c.model))].sort((a, b) => a.localeCompare(b));
+  };
+
+  if (!isSupabaseConfigured || !supabase) return fallback();
+  try {
+    let query = supabase.from("cars").select("model").eq("stock", true);
+    if (brand) query = query.eq("brand", brand);
+    const { data, error } = await query;
+    if (error) throw error;
+    const models = (data ?? []).map((r) => (r as { model: string }).model).filter(Boolean);
+    return [...new Set(models)].sort((a, b) => a.localeCompare(b));
+  } catch {
+    return fallback();
   }
 }
 
@@ -392,6 +420,7 @@ export async function countCars(filters: CarFilters): Promise<number> {
     if (filters.certified) query = query.eq("certified", true);
     if (filters.rental) query = query.eq("rental", true);
     if (filters.model) query = query.ilike("model", `%${filters.model}%`);
+    if (filters.vehicle_type) query = query.eq("vehicle_type", filters.vehicle_type);
     if (filters.body_style) query = query.eq("body_style", filters.body_style);
     if (filters.fuel) query = query.eq("fuel", filters.fuel);
     if (filters.transmission) query = query.eq("transmission", filters.transmission);
@@ -448,6 +477,22 @@ export async function getArticles(): Promise<Article[]> {
     return (data ?? []) as Article[];
   } catch {
     return mockArticles;
+  }
+}
+
+export async function getReviews(): Promise<Review[]> {
+  if (!isSupabaseConfigured || !supabase) return [];
+  try {
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("*")
+      .eq("visible", true)
+      .order("position")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return (data ?? []) as Review[];
+  } catch {
+    return [];
   }
 }
 

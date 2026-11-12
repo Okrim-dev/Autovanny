@@ -27,7 +27,16 @@ export function formatDate(value: string): string {
 }
 
 export function formatPower(bhp: number): string {
-  return `${formatNumber(Math.round(bhp * 1.01387))} cv`;
+  return `${formatNumber(bhp)} cv`;
+}
+
+export function formatKw(kilowatts: number): string {
+  return `${formatNumber(Math.round(kilowatts))} kW`;
+}
+
+export function formatRegistration(month: number | null | undefined, year: number): string {
+  if (!month) return String(year);
+  return `${String(month).padStart(2, "0")}/${year}`;
 }
 
 export function formatDisplacement(cc: number): string {

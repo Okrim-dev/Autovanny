@@ -51,9 +51,6 @@ export default async function LatestCars({ limit = 10 }: { limit?: number }) {
                       Nessuna immagine
                     </span>
                   )}
-                  <span className="absolute left-3 top-3 rounded-full bg-ink/80 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
-                    {car.year}
-                  </span>
                 </span>
 
                 <span className="flex flex-1 flex-col gap-2 p-4">
@@ -69,7 +66,18 @@ export default async function LatestCars({ limit = 10 }: { limit?: number }) {
                   </span>
                   <span className="text-xs text-zinc-500">
                     {formatMileage(car.mileage)} · {fuelLabel(car.fuel)}
+                    {car.month ? ` · ${car.month}/${car.year}` : ""}
                   </span>
+                  {(car.bhp || car.kilowatts) && (
+                    <span className="text-xs text-zinc-500">
+                      {[
+                        car.bhp ? `${car.bhp} CV` : "",
+                        car.kilowatts ? `${car.kilowatts} kW` : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
+                    </span>
+                  )}
                 </span>
               </Link>
             </li>
