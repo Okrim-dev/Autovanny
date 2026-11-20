@@ -18,7 +18,7 @@ const EMPTY_FORM = {
   year: "",
   mileage: "",
   price: "",
-  fuel: "Petrol",
+  fuel: "Benzina",
   transmission: "Automatic",
   body_style: "",
   category: "",
@@ -39,14 +39,6 @@ const EMPTY_FORM = {
 };
 
 type FormState = typeof EMPTY_FORM;
-
-const FUELS = [
-  { value: "Petrol", label: "Benzina" },
-  { value: "Diesel", label: "Diesel" },
-  { value: "Hybrid", label: "Ibrida" },
-  { value: "Plug-in Hybrid", label: "Ibrida plug-in" },
-  { value: "Electric", label: "Elettrica" },
-];
 
 const TRANSMISSIONS = [
   { value: "Automatic", label: "Automatico" },
@@ -411,13 +403,12 @@ export default function AdminVehicles({
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-ink">Alimentazione</label>
-              <select value={form.fuel} onChange={(e) => set("fuel", e.target.value)} className={inputClass}>
-                {FUELS.map((f) => (
-                  <option key={f.value} value={f.value}>
-                    {f.label}
-                  </option>
-                ))}
-              </select>
+              <input
+                value={form.fuel}
+                onChange={(e) => set("fuel", e.target.value)}
+                placeholder="es. Benzina, Diesel, Ibrida, Elettrica"
+                className={inputClass}
+              />
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-ink">Trasmissione</label>

@@ -15,9 +15,11 @@ async function requireUser() {
 }
 
 function revalidateSite() {
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   revalidatePath("/showroom");
+  revalidatePath("/auto/[slug]", "page");
   revalidatePath("/blog");
+  revalidatePath("/blog/[slug]", "page");
   revalidatePath("/admin");
   revalidatePath("/admin/vehicles");
   revalidatePath("/admin/articles");
@@ -157,7 +159,7 @@ export async function saveVehicleAction(input: VehicleInput): Promise<{ ok: bool
     mileage: input.mileage || 0,
     vehicle_type: input.vehicle_type === "autocarro" ? "autocarro" : "autovettura",
     seats: input.seats?.trim() || null,
-    fuel: input.fuel,
+    fuel: input.fuel.trim() || "Benzina",
     transmission: input.transmission,
     body_style: input.body_style?.trim() || null,
     condition: input.condition?.trim() || "Usato",

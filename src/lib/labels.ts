@@ -87,6 +87,18 @@ export function fuelLabel(value?: string | null): string {
   return label(FUEL_LABELS, value);
 }
 
+export function isElectricFuel(value?: string | null): boolean {
+  if (!value) return false;
+  const normalized = value.trim().toLowerCase();
+  return (
+    normalized === "electric" ||
+    normalized === "elettrico" ||
+    normalized === "elettrica" ||
+    normalized === "ev" ||
+    normalized === "bev"
+  );
+}
+
 export function bodyStyleLabel(value?: string | null): string {
   return label(BODY_STYLE_LABELS, value);
 }

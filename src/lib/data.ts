@@ -156,7 +156,7 @@ export async function getCarCategories(): Promise<CarCategory[]> {
         slug: category.slug,
         tagline: category.tagline ?? "",
         count: matches.length,
-        image: matches.find((c) => c.images?.length > 0)?.images[0] ?? category.image,
+        image: category.image ?? matches.find((c) => c.images?.length > 0)?.images[0] ?? null,
         url: `/showroom?category=${encodeURIComponent(category.slug)}`,
         filter: { key: "category", value: category.slug },
       };
