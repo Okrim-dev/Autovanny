@@ -11,26 +11,33 @@ export default function CategoryTiles({ categories }: { categories: CarCategory[
         <Link
           key={category.slug}
           href={category.url}
-          className="group relative block h-56 w-44 shrink-0 snap-start overflow-hidden rounded-2xl sm:h-64 sm:w-52"
+          className="group flex aspect-square w-52 shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-line bg-white transition-shadow hover:shadow-lg sm:w-64"
         >
-          {category.image ? (
-            <Image
-              src={category.image}
-              alt={category.name}
-              fill
-              sizes="(max-width: 640px) 176px, 208px"
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center bg-zinc-200 text-zinc-400">
-              Nessuna immagine
-            </div>
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/25 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 p-4">
-            <p className="text-base font-bold leading-tight text-white">{category.name}</p>
-            <p className="mt-1 text-xs text-white/70">{category.tagline}</p>
-          </div>
+          <span className="relative block aspect-[4/3] w-full shrink-0 overflow-hidden bg-zinc-100">
+            {category.image ? (
+              <Image
+                src={category.image}
+                alt={category.name}
+                fill
+                sizes="(max-width: 640px) 208px, 256px"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            ) : (
+              <span className="flex h-full items-center justify-center text-xs text-zinc-400">
+                Nessuna immagine
+              </span>
+            )}
+          </span>
+          <span className="flex min-h-0 flex-1 flex-col justify-center p-3">
+            <span className="block truncate text-sm font-bold leading-tight text-ink">
+              {category.name}
+            </span>
+            {category.tagline && (
+              <span className="mt-0.5 block truncate text-xs text-zinc-500">
+                {category.tagline}
+              </span>
+            )}
+          </span>
         </Link>
       ))}
     </div>
